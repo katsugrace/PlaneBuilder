@@ -4,9 +4,7 @@
 
 class PlaneBuilderTest
   : public testing::Test
-{
-
-};
+{};
 
 TEST_F(PlaneBuilderTest, MAIN)
 {
