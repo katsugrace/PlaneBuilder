@@ -5,6 +5,7 @@ file(GLOB_RECURSE SOURCES src/*.cpp)
 
 set(PACKAGE_DEPENDS
   rclcpp
+  Eigen3
 )
 
 find_package(ament_cmake REQUIRED)
@@ -15,6 +16,7 @@ endforeach()
 include_directories(include)
 
 add_executable(plane_builder src/main.cpp ${SOURCES})
+target_link_libraries(plane_builder Eigen3::Eigen)
 
 ament_target_dependencies(plane_builder ${PACKAGE_DEPENDS})
 
