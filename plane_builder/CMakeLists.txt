@@ -1,39 +1,30 @@
 cmake_minimum_required(VERSION 3.8)
 project(plane_builder)
 
-if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
-  add_compile_options(-Wall -Wextra -Wpedantic)
-endif()
-
-set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_CXX_STANDARD_REQUIRED True)
-
-find_package(ament_cmake REQUIRED)
-find_package(rclcpp REQUIRED)
-
 file(GLOB_RECURSE SOURCES src/*.cpp)
 
-set(dependencies
+set(PACKAGE_DEPENDS
   rclcpp
+  tf2
+  tf2_ros
+  geometry_msgs
+  visualization_msgs
+  Eigen3
 )
+
+find_package(ament_cmake REQUIRED)
+foreach(package IN ITEMS ${PACKAGE_DEPENDS})
+  find_package(${package} REQUIRED)
+endforeach()
 
 include_directories(include)
 
-add_executable(${PROJECT_NAME} src/main.cpp ${SOURCES})
-ament_target_dependencies(${PROJECT_NAME}
-  ${dependencies}
-)
+add_executable(plane_builder src/main.cpp ${SOURCES})
+target_link_libraries(plane_builder Eigen3::Eigen)
 
-install(TARGETS
-  ${PROJECT_NAME}
-  DESTINATION lib/${PROJECT_NAME}
-)
+ament_target_dependencies(plane_builder ${PACKAGE_DEPENDS})
 
-if(BUILD_TESTING)
-  find_package(ament_lint_auto REQUIRED)
-  set(ament_cmake_copyright_FOUND TRUE)
-  set(ament_cmake_cpplint_FOUND TRUE)
-  ament_lint_auto_find_test_dependencies()
-endif()
+install(TARGETS plane_builder
+  DESTINATION lib/${PROJECT_NAME})
 
 ament_package()
