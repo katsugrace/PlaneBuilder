@@ -5,6 +5,10 @@ file(GLOB_RECURSE SOURCES src/*.cpp)
 
 set(PACKAGE_DEPENDS
   rclcpp
+  tf2
+  tf2_ros
+  geometry_msgs
+  visualization_msgs
   Eigen3
 )
 

@@ -3,8 +3,13 @@
 #ifndef PLANE_BUILDER__PLANE_BUILDER_HPP_
 #define PLANE_BUILDER__PLANE_BUILDER_HPP_
 
+#include <tf2_ros/transform_broadcaster.h>
+
+#include <eigen3/Eigen/Dense>
+#include <string>
+#include <memory>
+
 #include <rclcpp/rclcpp.hpp>
-#include <Eigen/Dense>
 
 namespace plane_builder
 {
@@ -24,13 +29,20 @@ public:
 
 public:
   bool AttachPoints(
-    const Eigen::Vector3d & first,
-    const Eigen::Vector3d & second,
-    const Eigen::Vector3d & third);
+    const Eigen::Vector3d & first_point,
+    const Eigen::Vector3d & second_point,
+    const Eigen::Vector3d & third_point);
+
+private:
+  void publishPlaneCb();
 
 private:
   std::string header_frame_;
   std::string child_frame_;
+
+private:
+  std::shared_ptr<tf2_ros::TransformBroadcaster> broadcaster_;
+  rclcpp::TimerBase::SharedPtr timer_;
 };
 
 }  // namespace plane_builder
