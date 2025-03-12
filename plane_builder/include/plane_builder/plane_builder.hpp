@@ -35,6 +35,7 @@ public:
 
 private:
   void publishPlaneCb();
+  void declareParameters();
 
 private:
   std::string header_frame_;
