@@ -13,6 +13,7 @@ PlaneBuilder::PlaneBuilder(const rclcpp::NodeOptions & options)
   , child_frame_(CHILD_FRAME)
   , broadcaster_(std::make_shared<tf2_ros::TransformBroadcaster>(this))
 {
+  declareParameters();
   timer_ = this->create_wall_timer(std::chrono::milliseconds(500),
     std::bind(&PlaneBuilder::publishPlaneCb, this));
 }
@@ -54,6 +55,12 @@ void PlaneBuilder::publishPlaneCb()
   transfrom_stamped.child_frame_id = child_frame_;
 
   broadcaster_->sendTransform(transfrom_stamped);
+}
+
+void PlaneBuilder::declareParameters()
+{
+  this->get_parameter("header_frame", header_frame_);
+  this->get_parameter("child_frame", child_frame_);
 }
 
 }  // namespace plane_builder
