@@ -27,4 +27,7 @@ ament_target_dependencies(plane_builder ${PACKAGE_DEPENDS})
 install(TARGETS plane_builder
   DESTINATION lib/${PROJECT_NAME})
 
+install(DIRECTORY config DESTINATION
+  share/${PROJECT_NAME})
+
 ament_package()
