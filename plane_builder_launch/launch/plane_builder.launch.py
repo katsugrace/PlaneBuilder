@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 
 from launch import LaunchDescription
-
 from src.nodes import plane_builder_node
 
 
