@@ -39,6 +39,9 @@ public:
     const geometry_msgs::msg::Point & second_point,
     const geometry_msgs::msg::Point & third_point);
 
+  void SetPosition(const Eigen::Vector3d & position) noexcept;
+  void SetPosition(const geometry_msgs::msg::Point & position) noexcept;
+
 private:
   void publishPlaneCb();
   void declareParameters();
