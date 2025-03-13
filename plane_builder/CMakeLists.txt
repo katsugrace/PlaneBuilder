@@ -10,6 +10,7 @@ set(PACKAGE_DEPENDS
   geometry_msgs
   visualization_msgs
   Eigen3
+  plane_builder_msgs
 )
 
 find_package(ament_cmake REQUIRED)

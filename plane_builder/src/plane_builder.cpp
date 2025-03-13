@@ -16,6 +16,12 @@ PlaneBuilder::PlaneBuilder(const rclcpp::NodeOptions & options)
   declareParameters();
   timer_ = this->create_wall_timer(std::chrono::milliseconds(500),
     std::bind(&PlaneBuilder::publishPlaneCb, this));
+  attach_points_srv_ = this->create_service<plane_builder_msgs::srv::AttachPoints>(
+    "~/attach_points", std::bind(&PlaneBuilder::attachPointsCallback, this,
+        std::placeholders::_1, std::placeholders::_2));
+  set_position_srv_ = this->create_service<plane_builder_msgs::srv::SetPosition>(
+    "~/set_position", std::bind(&PlaneBuilder::setPositionCallback, this,
+        std::placeholders::_1, std::placeholders::_2));
 }
 
 void PlaneBuilder::SetHeaderFrame(const std::string & name) noexcept
@@ -105,6 +111,23 @@ void PlaneBuilder::SetPosition(const geometry_msgs::msg::Point & position) noexc
   transfrom_stamped_.transform.translation.x = position.x;
   transfrom_stamped_.transform.translation.y = position.y;
   transfrom_stamped_.transform.translation.z = position.z;
+}
+
+void PlaneBuilder::attachPointsCallback(
+  const plane_builder_msgs::srv::AttachPoints::Request::SharedPtr request,
+  plane_builder_msgs::srv::AttachPoints::Response::SharedPtr response)
+{
+  response->success = AttachPoints(
+    request->first_point,
+    request->second_point,
+    request->third_point);
+}
+
+void PlaneBuilder::setPositionCallback(
+  const plane_builder_msgs::srv::SetPosition::Request::SharedPtr request,
+  plane_builder_msgs::srv::SetPosition::Response::SharedPtr)
+{
+  SetPosition(request->position);
 }
 
 void PlaneBuilder::publishPlaneCb()
