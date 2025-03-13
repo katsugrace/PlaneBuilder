@@ -106,6 +106,15 @@ void PlaneBuilder::declareParameters()
 {
   this->get_parameter("header_frame", header_frame_);
   this->get_parameter("child_frame", child_frame_);
+
+  this->get_parameter("initial.position.x", transfrom_stamped_.transform.translation.x);
+  this->get_parameter("initial.position.y", transfrom_stamped_.transform.translation.y);
+  this->get_parameter("initial.position.z", transfrom_stamped_.transform.translation.z);
+
+  this->get_parameter("initial.quaternion.x", transfrom_stamped_.transform.rotation.x);
+  this->get_parameter("initial.quaternion.y", transfrom_stamped_.transform.rotation.y);
+  this->get_parameter("initial.quaternion.z", transfrom_stamped_.transform.rotation.z);
+  this->get_parameter("initial.quaternion.w", transfrom_stamped_.transform.rotation.w);
 }
 
 }  // namespace plane_builder

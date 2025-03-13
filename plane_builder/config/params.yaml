@@ -1,2 +1,12 @@
 header_frame: "base_link"
 child_frame: "plane"
+initial:
+  position:
+    x: 0.0
+    y: 0.0
+    z: 0.0
+  quaternion:
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 1.0
