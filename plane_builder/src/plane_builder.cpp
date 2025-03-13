@@ -43,13 +43,36 @@ bool PlaneBuilder::AttachPoints(
   const Eigen::Vector3d & second_point,
   const Eigen::Vector3d & third_point)
 {
-  Eigen::Vector3d first_matrtix = second_point - first_point;
-  Eigen::Vector3d second_matrtix = third_point - first_point;
+  Eigen::Vector3d first_vector = second_point - first_point;
+  if (first_vector.norm() == 0) {
+    RCLCPP_ERROR(this->get_logger(),
+      "The first vector (second_point - first_point) is zero");
+    return false;
+  }
 
-  Eigen::Vector3d normal = first_matrtix.cross(second_matrtix);
+  Eigen::Vector3d second_vector = third_point - first_point;
+  if (second_vector.norm() == 0) {
+    RCLCPP_ERROR(this->get_logger(),
+      "The second vector (third_point - first_point) is zero");
+    return false;
+  }
+
+  Eigen::Vector3d normal = first_vector.cross(second_vector);
+  if (normal.norm() == 0) {
+    RCLCPP_ERROR(this->get_logger(),
+      "The cross product of the two vectors is zero, "
+      "indicating that the points are collinear");
+    return false;
+  }
+
   normal.normalize();
 
   auto quaterniond = Eigen::Quaterniond::FromTwoVectors(Eigen::Vector3d::UnitZ(), normal);
+  if (quaterniond.coeffs().hasNaN()) {
+    RCLCPP_ERROR(this->get_logger(),
+      "The computed quaternion contains NaN values");
+    return false;
+  }
 
   transfrom_stamped_.transform.rotation.x = quaterniond.x();
   transfrom_stamped_.transform.rotation.y = quaterniond.y();
