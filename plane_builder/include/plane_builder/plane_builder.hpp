@@ -9,6 +9,7 @@
 #include <string>
 #include <memory>
 
+#include <geometry_msgs/msg/point.hpp>
 #include <rclcpp/rclcpp.hpp>
 
 namespace plane_builder
@@ -33,6 +34,11 @@ public:
     const Eigen::Vector3d & second_point,
     const Eigen::Vector3d & third_point);
 
+  bool AttachPoints(
+    const geometry_msgs::msg::Point & first_point,
+    const geometry_msgs::msg::Point & second_point,
+    const geometry_msgs::msg::Point & third_point);
+
 private:
   void publishPlaneCb();
   void declareParameters();
@@ -42,6 +48,7 @@ private:
   std::string child_frame_;
 
 private:
+  geometry_msgs::msg::TransformStamped transfrom_stamped_;
   std::shared_ptr<tf2_ros::TransformBroadcaster> broadcaster_;
   rclcpp::TimerBase::SharedPtr timer_;
 };
