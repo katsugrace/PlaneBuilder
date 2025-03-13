@@ -93,6 +93,20 @@ bool PlaneBuilder::AttachPoints(
     Eigen::Vector3d(third_point.x, third_point.y, third_point.z));
 }
 
+void PlaneBuilder::SetPosition(const Eigen::Vector3d & position) noexcept
+{
+  transfrom_stamped_.transform.translation.x = position.x();
+  transfrom_stamped_.transform.translation.y = position.y();
+  transfrom_stamped_.transform.translation.z = position.z();
+}
+
+void PlaneBuilder::SetPosition(const geometry_msgs::msg::Point & position) noexcept
+{
+  transfrom_stamped_.transform.translation.x = position.x;
+  transfrom_stamped_.transform.translation.y = position.y;
+  transfrom_stamped_.transform.translation.z = position.z;
+}
+
 void PlaneBuilder::publishPlaneCb()
 {
   transfrom_stamped_.header.stamp = this->now();
