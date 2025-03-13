@@ -76,10 +76,6 @@ void PlaneBuilder::publishPlaneCb()
   transfrom_stamped_.header.frame_id = header_frame_;
   transfrom_stamped_.child_frame_id = child_frame_;
 
-  transfrom_stamped_.transform.translation.x = 0.0;
-  transfrom_stamped_.transform.translation.x = 0.0;
-  transfrom_stamped_.transform.translation.x = 1.1;
-
   broadcaster_->sendTransform(transfrom_stamped_);
 }
 
