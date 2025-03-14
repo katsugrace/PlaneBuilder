@@ -1,14 +1,11 @@
 cmake_minimum_required(VERSION 3.8)
 project(plane_builder)
 
-file(GLOB_RECURSE SOURCES src/*.cpp)
-
 set(PACKAGE_DEPENDS
   rclcpp
   tf2
   tf2_ros
   geometry_msgs
-  visualization_msgs
   Eigen3
   plane_builder_msgs
 )
@@ -17,6 +14,8 @@ find_package(ament_cmake REQUIRED)
 foreach(package IN ITEMS ${PACKAGE_DEPENDS})
   find_package(${package} REQUIRED)
 endforeach()
+
+file(GLOB_RECURSE SOURCES src/*.cpp)
 
 include_directories(include)
 

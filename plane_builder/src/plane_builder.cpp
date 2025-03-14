@@ -14,14 +14,20 @@ PlaneBuilder::PlaneBuilder(const rclcpp::NodeOptions & options)
   , broadcaster_(std::make_shared<tf2_ros::TransformBroadcaster>(this))
 {
   declareParameters();
+
   timer_ = this->create_wall_timer(std::chrono::milliseconds(500),
     std::bind(&PlaneBuilder::publishPlaneCb, this));
+
   attach_points_srv_ = this->create_service<plane_builder_msgs::srv::AttachPoints>(
     "~/attach_points", std::bind(&PlaneBuilder::attachPointsCallback, this,
         std::placeholders::_1, std::placeholders::_2));
+
   set_position_srv_ = this->create_service<plane_builder_msgs::srv::SetPosition>(
     "~/set_position", std::bind(&PlaneBuilder::setPositionCallback, this,
         std::placeholders::_1, std::placeholders::_2));
+
+  plane_state_pub_ = this->create_publisher<geometry_msgs::msg::TransformStamped>(
+    "~/state", rclcpp::SystemDefaultsQoS());
 }
 
 void PlaneBuilder::SetHeaderFrame(const std::string & name) noexcept
@@ -133,10 +139,13 @@ void PlaneBuilder::setPositionCallback(
 void PlaneBuilder::publishPlaneCb()
 {
   transfrom_stamped_.header.stamp = this->now();
+
   transfrom_stamped_.header.frame_id = header_frame_;
   transfrom_stamped_.child_frame_id = child_frame_;
 
   broadcaster_->sendTransform(transfrom_stamped_);
+
+  plane_state_pub_->publish(transfrom_stamped_);
 }
 
 void PlaneBuilder::declareParameters()
