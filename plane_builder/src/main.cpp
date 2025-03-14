@@ -14,6 +14,7 @@ int main(int argc, char * argv[])
   node_options.automatically_declare_parameters_from_overrides(true);
 
   auto node = std::make_shared<plane_builder::PlaneBuilder>(node_options);
+
   rclcpp::spin(node->get_node_base_interface());
   rclcpp::shutdown();
 

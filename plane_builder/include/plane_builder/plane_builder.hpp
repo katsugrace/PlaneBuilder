@@ -68,6 +68,7 @@ private:
 
   rclcpp::Service<plane_builder_msgs::srv::AttachPoints>::SharedPtr attach_points_srv_;
   rclcpp::Service<plane_builder_msgs::srv::SetPosition>::SharedPtr set_position_srv_;
+  rclcpp::Publisher<geometry_msgs::msg::TransformStamped>::SharedPtr plane_state_pub_;
 };
 
 }  // namespace plane_builder
